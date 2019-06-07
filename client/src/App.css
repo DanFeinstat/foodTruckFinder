@@ -1,5 +1,16 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(12, [col-start] 1fr);
+  /* grid-gap: 20px; */
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+}
+.App > * {
+  grid-column: col-start / span 12;
 }
 
 .App-logo {

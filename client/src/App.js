@@ -1,16 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Map from "./components/map/Map";
+import Header from "./components/header/Header";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <Header />
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
+        </p> */}
+      <Map />{" "}
+      {/* <a
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
@@ -18,7 +22,7 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
     </div>
   );
 }
