@@ -1,0 +1,12 @@
+.container {
+  height: 56px;
+  width: 100vw;
+  background-color: rgb(97, 168, 164);
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 44px;
+  width: 56x;
+}
