@@ -17,6 +17,7 @@ const Map = ({ menuActive }) => {
   const { state, dispatch } = useContext(AppContext);
   const [mapBounds, setMapBounds] = useState({});
   const [popupInfo, setPopupInfo] = useState();
+  const [popupValue, setPopupValue] = useState();
   const [mapCenter, setMapCenter] = useState([-121.4944, 38.5816]);
   const [viewHeight, setViewHeight] = useState(
     document.documentElement.clientHeight
@@ -124,14 +125,15 @@ const Map = ({ menuActive }) => {
       >
       <Layer type="symbol" id="marker" layout={{ "icon-image": "marker-15" }}>
         {state.trucksToDisplay.map((truck, index) => {
+          let truckData = { name: truck.name, blurb: truck.blurb };
           return (
             <Feature
               key={index.toString()}
               coordinates={[truck.longitude, truck.latitude]}
               dataCoordinates={[truck.longitude, truck.latitude]}
               onClick={({ feature }) => {
-                console.log(feature.geometry.coordinates);
-
+                // console.log(feature.geometry.coordinates);
+                setPopupValue(truckData);
                 setPopupInfo(feature.geometry.coordinates);
                 setMapCenter(feature.geometry.coordinates);
               }}
@@ -142,7 +144,10 @@ const Map = ({ menuActive }) => {
       {popupInfo && (
         <Popup coordinates={popupInfo}>
           <div className={styles.popup}>
-            <div>Test</div>
+            <div>
+              <h3>{popupValue.name}</h3>
+              <div>{popupValue.blurb}</div>
+            </div>
           </div>
         </Popup>
       )}
