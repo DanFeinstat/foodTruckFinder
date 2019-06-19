@@ -13,7 +13,7 @@ const Header = ({ children, menuActive, setMenuActive }) => {
           setMenuActive(!menuActive);
         }}
       >
-        Truck Details
+        {menuActive === false ? `Show Details` : `Hide Details`}
       </button>
     </header>
   );

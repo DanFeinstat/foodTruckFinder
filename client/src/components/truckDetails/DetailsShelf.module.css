@@ -1,0 +1,8 @@
+.container {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 160px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+}

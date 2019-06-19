@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ReactMapboxGl, {
   Layer,
   Feature,
@@ -6,13 +6,16 @@ import ReactMapboxGl, {
   MapContext,
 } from "react-mapbox-gl";
 import styles from "./Map.module.css";
+import { AppContext } from "../store/store";
 // import { callbackify } from "util";
 
 //default public token
 const token = `pk.eyJ1IjoiZGFuZmVpbnN0YXQiLCJhIjoiY2p3ZTVhMnduMHIxZjN6b3UzdXNtNDBwMCJ9.IcWOA5mFg_ZIpLsoXu_e_g`;
 const Mapbox = ReactMapboxGl({ accessToken: token });
 
-const Map = ({ menuActive, updateMapBounds }) => {
+const Map = ({ menuActive }) => {
+  const { state, dispatch } = useContext(AppContext);
+  const [mapBounds, setMapBounds] = useState({});
   const [popupInfo, setPopupInfo] = useState();
   const [mapCenter, setMapCenter] = useState([-121.4944, 38.5816]);
   const [viewHeight, setViewHeight] = useState(
@@ -69,7 +72,18 @@ const Map = ({ menuActive, updateMapBounds }) => {
       maxZoom={15}
       center={mapCenter}
       onStyleLoad={map => {
-        updateMapBounds(map.getBounds());
+        let rawBounds = map.getBounds();
+        let onLoadBounds = {
+          latRange: [rawBounds._ne.lat, rawBounds._sw.lat],
+          lngRange: [rawBounds._ne.lng, rawBounds._sw.lng],
+        };
+        // console.log(onLoadBounds);
+        dispatch({
+          type: `newMapBounds`,
+          payload: onLoadBounds,
+        });
+        // setMapBounds(map.getBounds());
+        // console.log(map.getBounds());
       }}
       onClick={() => {
         setPopupInfo();
@@ -79,31 +93,37 @@ const Map = ({ menuActive, updateMapBounds }) => {
         width: `${menuActive ? `calc(100% - 160px)` : `100%`}`,
       }}
       onDragEnd={map => {
-        updateMapBounds(map.getBounds());
+        let rawBounds = map.getBounds();
+        let onLoadBounds = {
+          latRange: [rawBounds._ne.lat, rawBounds._sw.lat],
+          lngRange: [rawBounds._ne.lng, rawBounds._sw.lng],
+        };
+        // console.log(onLoadBounds);
+        dispatch({
+          type: `newMapBounds`,
+          payload: onLoadBounds,
+        });
+        // setMapBounds(map.getBounds());
+        // console.log(map.getBounds());
       }}
     >
       >
       <Layer type="symbol" id="marker" layout={{ "icon-image": "marker-15" }}>
-        <Feature
-          coordinates={[-121.4944, 38.5816]}
-          dataCoordinates={[-121.4944, 38.5816]}
-          onClick={({ feature }) => {
-            console.log(feature.geometry.coordinates);
+        {state.trucksToDisplay.map((truck, index) => {
+          return (
+            <Feature
+              key={index.toString()}
+              coordinates={[truck.longitude, truck.latitude]}
+              dataCoordinates={[truck.longitude, truck.latitude]}
+              onClick={({ feature }) => {
+                console.log(feature.geometry.coordinates);
 
-            setPopupInfo(feature.geometry.coordinates);
-            setMapCenter(feature.geometry.coordinates);
-          }}
-        />
-        <Feature
-          coordinates={[-121.4954, 38.5916]}
-          dataCoordinates={[-121.4954, 38.5916]}
-          onClick={({ feature }) => {
-            console.log(feature.geometry.coordinates);
-
-            setPopupInfo(feature.geometry.coordinates);
-            setMapCenter(feature.geometry.coordinates);
-          }}
-        />
+                setPopupInfo(feature.geometry.coordinates);
+                setMapCenter(feature.geometry.coordinates);
+              }}
+            />
+          );
+        })}
       </Layer>
       {popupInfo && (
         <Popup coordinates={popupInfo}>
