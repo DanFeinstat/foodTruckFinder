@@ -1,0 +1,10 @@
+.container {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 146px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  padding: 6px;
+  padding-left: 8px;
+}
