@@ -1,14 +1,17 @@
 .container {
-  width: 100%;
-  height: 140px;
+  width: 146px;
+  height: 120px;
   overflow-y: auto;
+  border-bottom: 1px solid lightgrey;
 }
 
 .title {
-  width: 100%;
-  text-align: center;
+  width: 146px;
+  /* text-align: center; */
 }
 
 .blurb {
-  width: 100%;
+  padding-left: 4px;
+  width: 142px;
+  color: grey;
 }

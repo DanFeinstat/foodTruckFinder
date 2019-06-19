@@ -106,6 +106,20 @@ const Map = ({ menuActive }) => {
         // setMapBounds(map.getBounds());
         // console.log(map.getBounds());
       }}
+      onZoomEnd={map => {
+        let rawBounds = map.getBounds();
+        let onLoadBounds = {
+          latRange: [rawBounds._ne.lat, rawBounds._sw.lat],
+          lngRange: [rawBounds._ne.lng, rawBounds._sw.lng],
+        };
+        // console.log(onLoadBounds);
+        dispatch({
+          type: `newMapBounds`,
+          payload: onLoadBounds,
+        });
+        // setMapBounds(map.getBounds());
+        // console.log(map.getBounds());
+      }}
     >
       >
       <Layer type="symbol" id="marker" layout={{ "icon-image": "marker-15" }}>
