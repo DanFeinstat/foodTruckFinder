@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
-import ReactMapboxGl, { Layer, Feature, Popup } from "react-mapbox-gl";
-import { callbackify } from "util";
+import ReactMapboxGl, {
+  Layer,
+  Feature,
+  Popup,
+  MapContext,
+} from "react-mapbox-gl";
+import styles from "./Map.module.css";
+// import { callbackify } from "util";
 
 //default public token
 const token = `pk.eyJ1IjoiZGFuZmVpbnN0YXQiLCJhIjoiY2p3ZTVhMnduMHIxZjN6b3UzdXNtNDBwMCJ9.IcWOA5mFg_ZIpLsoXu_e_g`;
 const Mapbox = ReactMapboxGl({ accessToken: token });
 
-const Map = () => {
+const Map = ({ menuActive, updateMapBounds }) => {
   const [popupInfo, setPopupInfo] = useState();
   const [mapCenter, setMapCenter] = useState([-121.4944, 38.5816]);
   const [viewHeight, setViewHeight] = useState(
@@ -15,6 +21,28 @@ const Map = () => {
   const [mapHeight, setMapHeight] = useState(
     document.documentElement.clientHeight - 56
   );
+
+  function getCurrentPosition(options = {}) {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options);
+    });
+  }
+  const getCenterPosition = async () => {
+    try {
+      const { coords } = await getCurrentPosition();
+      const { latitude, longitude } = coords;
+      setMapCenter([longitude, latitude]);
+
+      // Handle coordinates
+    } catch (error) {
+      // Handle error
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getCenterPosition();
+  }, []);
 
   useEffect(() => {
     if (viewHeight !== mapHeight + 56) {
@@ -28,7 +56,7 @@ const Map = () => {
     return () => {
       window.removeEventListener(`resize`, handleResize);
     };
-  });
+  }, [viewHeight, mapHeight]);
 
   useEffect(() => {
     const newMapHeight = viewHeight - 56;
@@ -40,11 +68,21 @@ const Map = () => {
       minZoom={4}
       maxZoom={15}
       center={mapCenter}
+      onStyleLoad={map => {
+        updateMapBounds(map.getBounds());
+      }}
+      onClick={() => {
+        setPopupInfo();
+      }}
       containerStyle={{
         height: `${mapHeight}px`,
-        width: "100%",
+        width: `${menuActive ? `calc(100% - 160px)` : `100%`}`,
+      }}
+      onDragEnd={map => {
+        updateMapBounds(map.getBounds());
       }}
     >
+      >
       <Layer type="symbol" id="marker" layout={{ "icon-image": "marker-15" }}>
         <Feature
           coordinates={[-121.4944, 38.5816]}
@@ -69,17 +107,11 @@ const Map = () => {
       </Layer>
       {popupInfo && (
         <Popup coordinates={popupInfo}>
-          <div>Test</div>
+          <div className={styles.popup}>
+            <div>Test</div>
+          </div>
         </Popup>
       )}
-      {/* <Popup key={station.id} coordinates={station.position}>
-            <StyledPopup>
-              <div>{station.name}</div>
-              <div>
-                {station.bikes} bikes / {station.slots} slots
-              </div>
-            </StyledPopup>
-          </Popup> */}
     </Mapbox>
   );
 };

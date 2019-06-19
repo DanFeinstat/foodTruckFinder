@@ -2,11 +2,19 @@ import React from "react";
 import styles from "./Header.module.css";
 import logo from "../../assets/images/HambreLogo.png";
 
-const Header = props => {
+const Header = ({ children, menuActive, setMenuActive }) => {
   return (
     <header className={styles.container}>
       <img src={logo} className={styles.logo} alt={`Logo`} />
-      {props.children}
+      {children}
+      <button
+        className={styles.menu}
+        onClick={() => {
+          setMenuActive(!menuActive);
+        }}
+      >
+        Truck Details
+      </button>
     </header>
   );
 };
