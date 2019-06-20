@@ -4,8 +4,10 @@ import ReactMapboxGl, {
   Feature,
   Popup,
   MapContext,
+  Image,
 } from "react-mapbox-gl";
 import styles from "./Map.module.css";
+import foodMarker from "../../assets/images/foodMapMarker.png";
 import { AppContext } from "../store/store";
 // import { callbackify } from "util";
 
@@ -123,7 +125,11 @@ const Map = ({ menuActive }) => {
       }}
     >
       >
-      <Layer type="symbol" id="marker" layout={{ "icon-image": "marker-15" }}>
+      <Layer
+        type="symbol"
+        id="marker"
+        layout={{ "icon-image": "restaurant-15" }}
+      >
         {state.trucksToDisplay.map((truck, index) => {
           let truckData = { name: truck.name, blurb: truck.blurb };
           return (
@@ -137,7 +143,9 @@ const Map = ({ menuActive }) => {
                 setPopupInfo(feature.geometry.coordinates);
                 setMapCenter(feature.geometry.coordinates);
               }}
-            />
+            >
+              <Image id={"image-foodMarker"} data={foodMarker} />
+            </Feature>
           );
         })}
       </Layer>
