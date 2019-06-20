@@ -20,6 +20,48 @@ const initialState = {
       longitude: -121.4010712,
       blurb: `The best way to pray.`,
     },
+    {
+      name: `Curry Up Now`,
+      latitude: 37.762289,
+      longitude: -122.421454,
+      blurb: `Indian street food in a hurry!`,
+    },
+    {
+      name: `Easy Slider`,
+      latitude: 37.787596,
+      longitude: -122.39663,
+      blurb: `Slinging sliders to order.`,
+    },
+    {
+      name: `Grillenium Falcon`,
+      latitude: 37.7897001,
+      longitude: -122.4035692,
+      blurb: `It made a grilled cheese in 14 parsecs!`,
+    },
+    {
+      name: `Hamborghini`,
+      latitude: 37.801151,
+      longitude: -122.407572,
+      blurb: `Serving up hocky-style specialties such as the Bobby Orr tuna melt.`,
+    },
+    {
+      name: `Guac N Roll`,
+      latitude: 37.8031337,
+      longitude: -122.4201193,
+      blurb: `Spicy food and spicy tunes.`,
+    },
+    {
+      name: `Mamas and Tapas`,
+      latitude: 38.578809,
+      longitude: -121.493758,
+      blurb: `Family run small plates.`,
+    },
+    {
+      name: `Ms. Cheesious`,
+      latitude: 37.7763685,
+      longitude: -122.4241893,
+      blurb: `Creative grilled cheese sandwiches.`,
+    },
   ],
   trucksToDisplay: [],
 };
