@@ -1,35 +1,25 @@
-import React, { useState } from "react";
-import Map from "./components/map/Map";
-import DetailsShelf from "./components/truckDetails/DetailsShelf";
-import Header from "./components/header/Header";
-import logo from "./logo.svg";
-import "./App.css";
+import React from "react";
+import Main from "./pages/Main";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { AppContextProvider } from "./components/store/store";
 
-function App() {
-  const [menuActive, setMenuActive] = useState(false);
-  return (
-    <div className="App">
+const App = () => (
+  <Router>
+    <div>
       <AppContextProvider>
-        <Header menuActive={menuActive} setMenuActive={setMenuActive} />
-        {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p> */}
-        <Map menuActive={menuActive} /> {menuActive ? <DetailsShelf /> : null}
-        {/* <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
+        <Switch>
+          <Route exact path="/" component={Main} />
+          {/* <Route exact path="/signup" component={signUp} /> */}
+          {/* <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/signup-user" component={UserSignUP} />
+        <Route exact path="/signup-truck" component={TruckSignUP} />
+        <Route exact path="/dashboard/owner" component={OwnerPage} />
+        <Route exact path="/login" component={Login} />
+        <Route component={Error} /> */}
+        </Switch>
       </AppContextProvider>
     </div>
-  );
-}
+  </Router>
+);
 
 export default App;

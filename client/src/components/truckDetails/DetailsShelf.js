@@ -9,6 +9,10 @@ const DetailsShelf = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.menuContainer}>
+        <button className={styles.menuBtn}>Log In</button>
+        <button className={styles.menuBtn}>Sign Up</button>
+      </div>
       {state.trucksToDisplay.map((truck, index) => {
         return (
           <TruckDetailsCard
