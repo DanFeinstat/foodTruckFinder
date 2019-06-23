@@ -1,11 +1,11 @@
 import React from "react";
-import styles from "./SignUp.module.css";
+import styles from "./LogIn.module.css";
 
-const SignUp = () => {
+const LogIn = () => {
   return (
     <form className={styles.container}>
-      <h1>Sign Up</h1>
-      <div className={styles.inputGroup}>
+      <h1>Log In</h1>
+      {/* <div className={styles.inputGroup}>
         <label for="username">Truck Name</label>
         <input
           className={styles.input}
@@ -16,7 +16,7 @@ const SignUp = () => {
           placeholder=" enter your truck's name"
           // onChange={props.inputChange}
         />
-      </div>
+      </div> */}
       <div className={styles.inputGroup}>
         <label className={styles.label} for="email">
           Email
@@ -46,34 +46,11 @@ const SignUp = () => {
           autoComplete="current-password"
           // onChange={props.inputChange}
         />
-      </div>
-      <div className={styles.inputGroup}>
-        <label className={styles.label} for="confirmPassword">
-          Confirm Password
-        </label>
-        <input
-          className={styles.input}
-          maxLength="20"
-          name="confirmPassword"
-          type="password"
-          id="confirmPassword"
-          placeholder=" enter your password again"
-          // onChange={props.inputChange}
-        />
-        <label className={styles.label}>Truck Details</label>
-        <textarea
-          className={styles.input}
-          maxLength="200"
-          type="text"
-          name="blurb"
-          placeholder=" describe your truck"
-          rows="3"
-        />
-        {/* <button onClick={props.signupSubmit} className={styles.submitBtn}>
+        {/* <button onClick={props.logInSubmit} className={styles.submitBtn}>
         Submit
       </button> */}
       </div>
     </form>
   );
 };
-export default SignUp;
+export default LogIn;

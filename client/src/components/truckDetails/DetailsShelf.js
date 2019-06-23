@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
 import styles from "./DetailsShelf.module.css";
 import TruckDetailsCard from "./TruckDetailsCard";
+import { withRouter } from "react-router-dom";
 import { AppContext } from "../store/store";
 
-const DetailsShelf = () => {
+const DetailsShelf = props => {
   const { state, dispatch } = useContext(AppContext);
   //   const [toDisplay, setToDisplay] = useState(state.trucksToDisplay);
 
@@ -11,7 +12,14 @@ const DetailsShelf = () => {
     <div className={styles.container}>
       <div className={styles.menuContainer}>
         <button className={styles.menuBtn}>Log In</button>
-        <button className={styles.menuBtn}>Sign Up</button>
+        <button
+          className={styles.menuBtn}
+          onClick={() => {
+            props.history.push(`/signup`);
+          }}
+        >
+          Sign Up
+        </button>
       </div>
       {state.trucksToDisplay.map((truck, index) => {
         return (
@@ -26,4 +34,4 @@ const DetailsShelf = () => {
   );
 };
 
-export default DetailsShelf;
+export default withRouter(DetailsShelf);
