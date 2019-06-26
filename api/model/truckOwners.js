@@ -22,12 +22,13 @@ const UserSchema = new Schema({
     trim: true,
     required: true,
   },
-  foodType: { type: String, trim: true, required: true },
-  description: { type: String, trim: true, required: true },
+  description: {
+    type: String,
+    trim: true,
+    maxlength: 240,
+  },
   location: { type: Array, default: [] },
-  address: { type: String, trim: true, required: false },
-
-  truckActive: { type: Boolean, default: false },
+  active: { type: Boolean, default: false },
 });
 
 UserSchema.pre("save", function(next) {
