@@ -2,7 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const path = require("path");
+const dotenv = require(`dotenv`);
 const app = express();
+const routes = require(`./api/route`);
 var server = require("http").Server(app);
 const PORT = process.env.PORT || 3002;
 
@@ -20,8 +22,14 @@ app.use((req, res, next) => {
   next();
 });
 
+dotenv.config({ path: `.env` });
+
+app.set(process.env.SECRET, `nodeRestApi`);
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(routes);
 
 if (process.env.NODE_ENV === `production`) {
   app.use(express.static(path.join(__dirname, `client/build`)));
