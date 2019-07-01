@@ -4,7 +4,7 @@ const saltRounds = 10;
 
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
+const OwnerSchema = new Schema({
   name: {
     type: String,
     trim: true,
@@ -31,9 +31,9 @@ const UserSchema = new Schema({
   active: { type: Boolean, default: false },
 });
 
-UserSchema.pre("save", function(next) {
+OwnerSchema.pre("save", function(next) {
   this.password = bcrypt.hashSync(this.password, saltRounds);
   next();
 });
 
-module.exports = mongoose.model(`User`, UserSchema);
+module.exports = mongoose.model(`Owner`, OwnerSchema);

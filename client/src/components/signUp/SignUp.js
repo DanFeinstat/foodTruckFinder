@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ownerApi from "../../utils/ownerApi";
 import styles from "./SignUp.module.css";
+import { AppContext } from "../store/store";
 
-const SignUp = () => {
+const SignUp = props => {
+  const { state, dispatch } = useContext(AppContext);
   const [name, setName] = useState("");
   const [nameFailed, setNameFailed] = useState(false);
   const [email, setEmail] = useState("");
@@ -18,11 +20,11 @@ const SignUp = () => {
     function_name(newValue);
   };
 
-  const handleSubmit = e => {
+  const handleSignupSubmit = e => {
     e.preventDefault();
     let regex = RegExp(/.+@.+\..+/);
     let validEmailFormat = regex.test(email);
-    console.log(validEmailFormat);
+    // console.log(validEmailFormat);
     if (!name) {
       setNameFailed(true);
       return alert("Please enter a name.");
@@ -40,48 +42,53 @@ const SignUp = () => {
       setConfirmPasswordFailed(true);
       return alert("Your passwords do not match");
     }
-    const userData = {
+    let userData = {
       name: name,
       email: email,
       password: password,
       description: description,
     };
     ownerApi.signUp(userData).then(response => {
-      const userInfo = {
+      let userInfo = {
         email: email,
         password: password,
       };
 
-      ownerApi.logIn(userInfo).then(response => {
-        if (response.data.status === "error") {
-          alert(response.data.message);
-        } else {
-          localStorage.setItem("foodTruckTrackerJwt", response.data.data.token);
-          //   this.loggedIn(response.data.data.user._id);
-          setPassword("");
-          setConfirmPassword("");
-
-          //   this.setState({
-          //     password: "",
-          //     verifyPassword: "",
-          //     loggedIn: true,
-          //     toDisplay: 4,
-          //     userId: response.data.data.user._id,
-          //   });
-        }
-      });
+      ownerApi
+        .logIn(userInfo)
+        .then(response => {
+          if (response.data.status === "error") {
+            alert(response.data.message);
+          } else {
+            localStorage.setItem(
+              "foodTruckTrackerJwt",
+              response.data.data.token
+            );
+            // console.log(response.data.user);
+            setPassword("");
+            setConfirmPassword("");
+            dispatch({
+              type: `login`,
+              payload: {
+                id: response.data.user._id,
+                name: name,
+                description: description,
+                loggedIn: true,
+              },
+            });
+          }
+        })
+        .then(res => {
+          props.history.push(`/dashboard`);
+        });
     });
-    //   };
   };
-  //   handle_function_call(function_name) {
-  //     this[function_name]()
-  // },
 
   return (
     <form
       className={styles.container}
       onSubmit={e => {
-        handleSubmit(e);
+        handleSignupSubmit(e);
       }}
     >
       <h1>Sign Up</h1>
@@ -92,7 +99,6 @@ const SignUp = () => {
           maxLength="30"
           name="name"
           type="text"
-          id="username"
           placeholder=" enter your truck's name"
           value={name}
           onClick={() => {
@@ -114,7 +120,6 @@ const SignUp = () => {
           maxLength="50"
           name="email"
           type="email"
-          id="email"
           placeholder=" yourEmail@whatever.com"
           autoComplete="email"
           value={email}
@@ -139,7 +144,6 @@ const SignUp = () => {
           maxLength="20"
           name="password"
           type="password"
-          id="password"
           placeholder=" enter password"
           autoComplete="current-password"
           value={password}
@@ -164,7 +168,6 @@ const SignUp = () => {
           maxLength="20"
           name="confirmPassword"
           type="password"
-          id="confirmPassword"
           placeholder=" enter your password again"
           value={confirmPassword}
           onClick={() => {

@@ -1,0 +1,49 @@
+.container {
+  width: 80%;
+  min-height: 160px;
+  border-radius: 20px;
+  margin: auto;
+  margin-top: 12px;
+  background-color: rgb(230, 230, 230);
+  padding: 12px;
+  display: grid;
+  grid-gap: 12px;
+  grid-template-columns: 8px 1fr 1fr 1fr min-content 8px;
+  grid-template-rows: 20% 1fr 1fr;
+  grid-template-areas:
+    ". title title . editBtn ."
+    ". textarea  textarea textarea textarea  ."
+    ". textarea  textarea textarea textarea .";
+}
+
+.title {
+  text-align: center;
+  grid-area: title;
+  margin: 0px;
+  border-bottom: 1px solid black;
+}
+
+.editBtn {
+  grid-area: editBtn;
+}
+
+.form {
+  grid-area: textarea;
+}
+
+.textarea {
+  border-radius: 20px;
+  width: 100%;
+  padding: 8px;
+  border: none;
+}
+
+.content {
+  grid-area: textarea;
+  background-color: rgb(245, 245, 246);
+  border-radius: 20px;
+  padding: 8px;
+}
+.submitBtn {
+  margin: auto;
+}

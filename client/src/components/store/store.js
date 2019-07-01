@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import ownerApi from "../../utils/ownerApi";
 
 const initialState = {
   trucks: [
@@ -64,6 +65,12 @@ const initialState = {
     },
   ],
   trucksToDisplay: [],
+  owner: {
+    id: "",
+    name: "",
+    description: "",
+    loggedIn: false,
+  },
 };
 
 function reducer(state, action) {
@@ -87,6 +94,37 @@ function reducer(state, action) {
         }
       });
       return { ...state, trucksToDisplay: newDisplay };
+    case `login`:
+      let newOwner = { ...state.owner };
+      newOwner.id = action.payload.id;
+      newOwner.name = action.payload.name;
+      newOwner.description = action.payload.description;
+      newOwner.loggedIn = true;
+      return { ...state, owner: newOwner };
+    case `logout`:
+      let resetOwner = { ...state.owner };
+      resetOwner.id = "";
+      resetOwner.name = "";
+      resetOwner.description = "";
+      resetOwner.loggedIn = false;
+      return { ...state, owner: resetOwner };
+    case `editDescription`:
+      let newDescription = { ...state.owner };
+      newDescription.description = action.payload.description;
+      console.log(action.payload);
+      // const newDescriptionDatabaseObject = {
+      //   id: state.owner.id,
+      //   description: action.payload.description,
+      // };
+      // const descriptionUpdate = setUpdateDescription(
+      //   newDescriptionDatabaseObject,
+      //   action.payload.authToken
+      // );
+      // console.log(descriptionUpdate);
+      return {
+        ...state,
+        owner: newDescription,
+      };
     default:
       return state;
   }

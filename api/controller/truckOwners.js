@@ -21,8 +21,8 @@ module.exports = {
         next(err);
         res.json({ status: `error`, message: `Invalid email`, data: null });
       } else {
-        // console.log(req.body.password);
-        // console.log(userInfo.password);
+        console.log(req.body.password);
+        console.log(userInfo.password);
         if (bcrypt.compareSync(req.body.password, userInfo.password)) {
           const token = jwt.sign(
             { id: userInfo._id },
@@ -43,9 +43,12 @@ module.exports = {
       }
     });
   },
-  getUser: (req, res) => {
+  getUser: function(req, res, next) {
+    console.log(req.params.id);
     ownersModel
-      .find({ _id: req.body.id })
+      .findOne({
+        _id: req.params.id,
+      })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
@@ -54,7 +57,7 @@ module.exports = {
     ownersModel
       .findOneAndUpdate(
         {
-          email: req.body.email,
+          _id: req.params.id,
         },
         {
           $set: { description: req.body.description },
@@ -67,7 +70,7 @@ module.exports = {
     ownersModel
       .findOneAndUpdate(
         {
-          email: req.body.email,
+          _id: req.body.id,
         },
         {
           $set: { active: true },
@@ -80,7 +83,7 @@ module.exports = {
     ownersModel
       .findOneAndUpdate(
         {
-          email: req.body.email,
+          _id: req.body.id,
         },
         {
           $set: { active: false },

@@ -11,11 +11,16 @@ export default {
       headers: { "x-access-token": authToken },
     });
   },
-  getUserData: authToken => {
-    return axios.get("/api/owner/userData", {
+  getUser: (id, authToken) => {
+    return axios.get(`/api/owner/userdata/${id}`, {
       headers: { "x-access-token": authToken },
     });
   },
+  // getUserData: (authToken, userData) => {
+  //   return axios.get(`/api/owner/userData`, userData, {
+  //     headers: { "x-access-token": authToken },
+  //   });
+  // },
   setActive: (userData, authToken) => {
     return axios.put(`/api/owner/active`, userData, {
       headers: { "x-access-token": authToken },

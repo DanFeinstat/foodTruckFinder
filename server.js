@@ -29,8 +29,6 @@ app.set(process.env.SECRET, `nodeRestApi`);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(routes);
-
 if (process.env.NODE_ENV === `production`) {
   app.use(express.static(path.join(__dirname, `client/build`)));
   app.get(`*`, (req, res) => {
@@ -40,9 +38,14 @@ if (process.env.NODE_ENV === `production`) {
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/chatIGN`, {
-  useNewUrlParser: true,
-});
+mongoose.connect(
+  process.env.MONGODB_URI || `mongodb://localhost/foodTruckFinder`,
+  {
+    useNewUrlParser: true,
+  }
+);
+
+app.use(routes);
 
 server.listen(PORT, () => {
   console.log(`Listening on port: ` + PORT);

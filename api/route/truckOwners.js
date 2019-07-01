@@ -10,7 +10,11 @@ function validateUser(req, res, next) {
     req.app.get(process.env.SECRET),
     function(err, decoded) {
       if (err) {
-        res.json({ status: "error", message: err.message, data: null });
+        res.json({
+          status: "error",
+          message: err.message,
+          data: null,
+        });
       } else {
         // add user id to request
         req.body.userId = decoded.id;
@@ -25,6 +29,6 @@ router.post(`/login`, ownersController.authenticate);
 router.put(`/description`, validateUser, ownersController.updateDescription);
 router.put(`/active`, validateUser, ownersController.setActive);
 router.put(`/inactive`, validateUser, ownersController.setInactive);
-router.get(`/userData`, validateUser, ownersController.getUser);
+router.get(`/userdata/:id`, validateUser, ownersController.getUser);
 
 module.exports = router;
