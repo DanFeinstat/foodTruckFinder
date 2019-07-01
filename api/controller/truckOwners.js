@@ -57,7 +57,7 @@ module.exports = {
     ownersModel
       .findOneAndUpdate(
         {
-          _id: req.params.id,
+          _id: req.body.id,
         },
         {
           $set: { description: req.body.description },

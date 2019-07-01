@@ -28,6 +28,9 @@ const UpdateDescription = () => {
               authToken: localStorage.foodTruckTrackerJwt,
             },
           });
+        })
+        .then(resp => {
+          setEditing(false);
         });
     });
   };
@@ -48,14 +51,6 @@ const UpdateDescription = () => {
           className={styles.form}
           onSubmit={e => {
             e.preventDefault();
-            setEditing(false);
-            // console.log(state.owner.id);
-            // ownerApi
-            //   .getUser(state.owner.id, localStorage.foodTruckTrackerJwt)
-            //   .then(res => {
-            //     console.log(res);
-            //   });
-            // console.log(newDescription);
             let newObj = {
               id: state.owner.id,
               description: newDescription,

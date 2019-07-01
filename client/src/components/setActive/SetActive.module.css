@@ -1,0 +1,37 @@
+.container {
+  width: 80%;
+  max-width: 400px;
+  min-height: 160px;
+  border-radius: 20px;
+  margin: auto;
+  margin-top: 12px;
+  background-color: rgb(230, 230, 230);
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+    ". . . ."
+    ". active active ."
+    ". . . ."
+    ". inactive inactive ."
+    ". . . .";
+}
+
+.activeBtn {
+  grid-area: active;
+  background: rgba(12, 124, 251, 0.8);
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
+
+.inactiveBtn {
+  grid-area: inactive;
+  background: rgba(240, 6, 9, 0.8);
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
