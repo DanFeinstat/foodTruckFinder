@@ -11,14 +11,25 @@ const DetailsShelf = props => {
   return (
     <div className={styles.container}>
       <div className={styles.menuContainer}>
-        <button
-          className={styles.menuBtn}
-          onClick={() => {
-            props.history.push(`/signup`);
-          }}
-        >
-          Log In
-        </button>
+        {state.owner.id ? (
+          <button
+            className={styles.menuBtn}
+            onClick={() => {
+              props.history.push(`/truckDashboard`);
+            }}
+          >
+            Account
+          </button>
+        ) : (
+          <button
+            className={styles.menuBtn}
+            onClick={() => {
+              props.history.push(`/signup`);
+            }}
+          >
+            Log In
+          </button>
+        )}
         {/* <button
           className={styles.menuBtn}
           onClick={() => {
