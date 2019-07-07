@@ -29,6 +29,7 @@ router.post(`/login`, ownersController.authenticate);
 router.put(`/description`, validateUser, ownersController.updateDescription);
 router.put(`/active`, validateUser, ownersController.setActive);
 router.put(`/inactive`, validateUser, ownersController.setInactive);
+router.put(`/newlocation`, validateUser, ownersController.newLocation);
 router.get(`/userdata/:id`, validateUser, ownersController.getUser);
 
 module.exports = router;

@@ -44,7 +44,7 @@ module.exports = {
     });
   },
   getUser: function(req, res, next) {
-    console.log(req.params.id);
+    // console.log(req.params.id);
     ownersModel
       .findOne({
         _id: req.params.id,
@@ -64,6 +64,22 @@ module.exports = {
         }
       )
       .then(newDescription => res.json(newDescription))
+      .catch(err => res.status(422).json(err));
+  },
+  newLocation: function(req, res) {
+    // console.log(req.body);
+    ownersModel
+      .findOneAndUpdate(
+        { _id: req.body.id },
+        {
+          $push: {
+            // pushing location from req.body into the location array
+            // $position 0 puts new location to 1st spot in the index
+            location: { $each: [req.body.data], $position: 0 },
+          },
+        }
+      )
+      .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   setActive: function(req, res, next) {
