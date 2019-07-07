@@ -13,7 +13,8 @@ function App() {
         setMenuActive={setMenuActive}
         mapPage={true}
       />
-      <Map menuActive={menuActive} /> {menuActive ? <DetailsShelf /> : null}
+      <Map menuActive={menuActive} />
+      {menuActive ? <DetailsShelf /> : null}
     </div>
   );
 }

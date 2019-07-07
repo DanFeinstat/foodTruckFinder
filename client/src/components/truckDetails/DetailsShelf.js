@@ -30,14 +30,6 @@ const DetailsShelf = props => {
             Log In
           </button>
         )}
-        {/* <button
-          className={styles.menuBtn}
-          onClick={() => {
-            props.history.push(`/signup`);
-          }}
-        >
-          Sign Up
-        </button> */}
       </div>
       {state.trucksToDisplay.map((truck, index) => {
         return (

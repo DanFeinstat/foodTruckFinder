@@ -10,6 +10,7 @@
 .logo {
   height: 44px;
   width: 56x;
+  cursor: pointer;
 }
 
 .menu {
