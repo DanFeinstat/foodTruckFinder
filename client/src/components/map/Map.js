@@ -5,12 +5,14 @@ import ReactMapboxGl, {
   Popup,
   MapContext,
   Image,
+  Marker,
 } from "react-mapbox-gl";
 import styles from "./Map.module.css";
-import foodMarker from "../../assets/images/foodMapMarker.png";
+// import foodMarker from "../../assets/images/foodMapMarker.png";
 import { AppContext } from "../store/store";
 import ownerApi from "../../utils/ownerApi";
 import io from "socket.io-client";
+// import TruckLocationIcon from "../icons/TruckLocationIcon";
 
 const socket = io.connect();
 
@@ -113,7 +115,7 @@ const Map = ({ menuActive }) => {
         // console.log(map.getBounds());
       }}
       onClick={() => {
-        setPopupInfo();
+        dispatch({ type: `popupValue` });
       }}
       containerStyle={{
         height: `${mapHeight}px`,
@@ -162,23 +164,36 @@ const Map = ({ menuActive }) => {
               coordinates={[truck.longitude, truck.latitude]}
               dataCoordinates={[truck.longitude, truck.latitude]}
               onClick={({ feature }) => {
-                // console.log(feature.geometry.coordinates);
-                setPopupValue(truckData);
-                setPopupInfo(feature.geometry.coordinates);
+                let details = {
+                  name: truckData.name,
+                  blurb: truckData.blurb,
+                  longitude: feature.geometry.coordinates[0],
+                  latitude: feature.geometry.coordinates[1],
+                };
+                console.log(details);
+                dispatch({
+                  type: `popupValue`,
+                  payload: {
+                    name: truckData.name,
+                    blurb: truckData.blurb,
+                    longitude: feature.geometry.coordinates[0],
+                    latitude: feature.geometry.coordinates[1],
+                  },
+                });
+                // setPopupValue(truckData);
+                // setPopupInfo(feature.geometry.coordinates);
                 setMapCenter(feature.geometry.coordinates);
               }}
-            >
-              <Image id={"image-foodMarker"} data={foodMarker} />
-            </Feature>
+            />
           );
         })}
       </Layer>
-      {popupInfo && (
-        <Popup coordinates={popupInfo}>
+      {state.popupValue && (
+        <Popup coordinates={state.popupValue.coords}>
           <div className={styles.popup}>
             <div>
-              <h3>{popupValue.name}</h3>
-              <div>{popupValue.blurb}</div>
+              <h3>{state.popupValue.name}</h3>
+              <div>{state.popupValue.blurb}</div>
             </div>
           </div>
         </Popup>

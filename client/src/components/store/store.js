@@ -64,6 +64,8 @@ const initialState = {
       blurb: `Creative grilled cheese sandwiches.`,
     },
   ],
+  // popUpInfo: null,
+  popupValue: null,
   realTrucks: [],
   trucksToDisplay: [],
   owner: {
@@ -100,6 +102,21 @@ function reducer(state, action) {
         }
       });
       return { ...state, trucksToDisplay: newDisplay };
+    // case `popupInfo`:
+    //   const newPopupInfo = [action.payload.longitude, action.payload.latitude];
+    //   return { ...state, popUpInfo: newPopupInfo };
+    case `popupValue`:
+      let newPopupValue;
+      if (action.payload) {
+        newPopupValue = {
+          name: action.payload.name,
+          blurb: action.payload.blurb,
+          coords: [action.payload.longitude, action.payload.latitude],
+        };
+      } else {
+        newPopupValue = null;
+      }
+      return { ...state, popupValue: newPopupValue };
     case `login`:
       let newOwner = { ...state.owner };
       newOwner.id = action.payload.id;
@@ -117,7 +134,7 @@ function reducer(state, action) {
     case `editDescription`:
       let newDescription = { ...state.owner };
       newDescription.description = action.payload.description;
-      console.log(action.payload);
+      // console.log(action.payload);
       // const newDescriptionDatabaseObject = {
       //   id: state.owner.id,
       //   description: action.payload.description,

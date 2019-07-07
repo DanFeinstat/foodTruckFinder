@@ -37,6 +37,8 @@ const DetailsShelf = props => {
             key={index.toString()}
             truckName={truck.name}
             truckBlurb={truck.blurb}
+            truckLatitude={truck.latitude}
+            truckLongitude={truck.longitude}
           />
         );
       })}
