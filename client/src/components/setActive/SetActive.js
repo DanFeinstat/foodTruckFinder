@@ -43,7 +43,7 @@ const SetActive = () => {
 
   const goOffline = () => {
     ownerApi
-      .setInactive(state.owner.id, localStorage.foodTruckTrackerJwt)
+      .setInactive({ id: state.owner.id }, localStorage.foodTruckTrackerJwt)
       .then(response => {
         setActive(false);
         alert(`Now Offline`);
