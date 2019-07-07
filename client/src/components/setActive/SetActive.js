@@ -2,6 +2,9 @@ import React, { useState, useContext } from "react";
 import styles from "./SetActive.module.css";
 import ownerApi from "../../utils/ownerApi";
 import { AppContext } from "../store/store";
+import io from "socket.io-client";
+
+const socket = io.connect();
 
 const SetActive = () => {
   const { state, dispatch } = useContext(AppContext);
@@ -32,8 +35,8 @@ const SetActive = () => {
             .setActive({ id: state.owner.id }, localStorage.foodTruckTrackerJwt)
             .then(response => {
               setActive(true);
+              socket.emit("truckStatusChange");
               alert(`location updated!`);
-              //use socket to update all maps.
             });
         });
     } catch (error) {
@@ -46,8 +49,8 @@ const SetActive = () => {
       .setInactive({ id: state.owner.id }, localStorage.foodTruckTrackerJwt)
       .then(response => {
         setActive(false);
+        socket.emit("truckStatusChange");
         alert(`Now Offline`);
-        //use socket to update all maps.
       });
   };
 

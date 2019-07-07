@@ -6,6 +6,7 @@ const dotenv = require(`dotenv`);
 const app = express();
 const routes = require(`./api/route`);
 var server = require("http").Server(app);
+var io = require("socket.io")(server);
 const PORT = process.env.PORT || 3002;
 
 app.use((req, res, next) => {
@@ -45,6 +46,13 @@ mongoose.connect(
     useFindAndModify: false,
   }
 );
+
+io.on(`connection`, function(socket) {
+  console.log(`a new user is connected: ${socket.id}`);
+  socket.on("truckStatusChange", () => {
+    io.emit(`NewTruckActivity`);
+  });
+});
 
 app.use(routes);
 

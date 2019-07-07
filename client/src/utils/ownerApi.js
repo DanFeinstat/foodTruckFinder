@@ -22,6 +22,10 @@ export default {
     });
   },
 
+  getAllActive: () => {
+    return axios.get(`/api/owner/allactive`);
+  },
+
   setActive: (userData, authToken) => {
     return axios.put(`/api/owner/active`, userData, {
       headers: { "x-access-token": authToken },

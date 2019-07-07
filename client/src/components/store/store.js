@@ -64,6 +64,7 @@ const initialState = {
       blurb: `Creative grilled cheese sandwiches.`,
     },
   ],
+  realTrucks: [],
   trucksToDisplay: [],
   owner: {
     id: "",
@@ -76,11 +77,16 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case `addTruck`:
-      const newTrucks = [...state.trucks];
-      newTrucks.push(action.payload);
-      return { ...state, trucks: newTrucks };
+      const moreTrucks = action.payload;
+      return { ...state, realTrucks: moreTrucks };
+    case `removeTruck`:
+      const lessTrucks = [...state.realtrucks];
+      let filteredNewTrucks = lessTrucks.filter(
+        truck => truck.name !== action.payload
+      );
+      return { ...state, realTrucks: filteredNewTrucks };
     case `newMapBounds`:
-      const currentTrucks = [...state.trucks];
+      const currentTrucks = [...state.trucks, ...state.realTrucks];
       const newDisplay = [];
       currentTrucks.map(truck => {
         let latTest = [...action.payload.latRange];

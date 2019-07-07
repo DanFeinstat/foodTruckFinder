@@ -9,7 +9,10 @@ import ReactMapboxGl, {
 import styles from "./Map.module.css";
 import foodMarker from "../../assets/images/foodMapMarker.png";
 import { AppContext } from "../store/store";
-// import { callbackify } from "util";
+import ownerApi from "../../utils/ownerApi";
+import io from "socket.io-client";
+
+const socket = io.connect();
 
 //default public token
 const token = `pk.eyJ1IjoiZGFuZmVpbnN0YXQiLCJhIjoiY2p3ZTVhMnduMHIxZjN6b3UzdXNtNDBwMCJ9.IcWOA5mFg_ZIpLsoXu_e_g`;
@@ -38,17 +41,38 @@ const Map = ({ menuActive }) => {
       const { coords } = await getCurrentPosition();
       const { latitude, longitude } = coords;
       setMapCenter([longitude, latitude]);
-
-      // Handle coordinates
     } catch (error) {
-      // Handle error
       console.error(error);
     }
   };
 
+  const getTrucks = () => {
+    ownerApi.getAllActive().then(res => {
+      // console.log(res.data);
+      let newActiveTrucks = [];
+      res.data.map(item => {
+        let newTruck = {
+          name: item.name,
+          latitude: item.location[0].latitude,
+          longitude: item.location[0].longitude,
+          blurb: item.description,
+        };
+        newActiveTrucks.push(newTruck);
+      });
+      dispatch({ type: `addTruck`, payload: newActiveTrucks });
+    });
+  };
+
   useEffect(() => {
     getCenterPosition();
+    getTrucks();
   }, []);
+
+  useEffect(() => {
+    socket.on("newTruckActivity", message => {
+      getTrucks();
+    });
+  });
 
   useEffect(() => {
     if (viewHeight !== mapHeight + 56) {

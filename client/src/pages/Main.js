@@ -8,7 +8,11 @@ function App() {
   const [menuActive, setMenuActive] = useState(false);
   return (
     <div className="App">
-      <Header menuActive={menuActive} setMenuActive={setMenuActive} />
+      <Header
+        menuActive={menuActive}
+        setMenuActive={setMenuActive}
+        mapPage={true}
+      />
       <Map menuActive={menuActive} /> {menuActive ? <DetailsShelf /> : null}
     </div>
   );

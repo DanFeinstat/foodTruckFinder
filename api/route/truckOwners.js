@@ -24,8 +24,14 @@ function validateUser(req, res, next) {
   );
 }
 
+//for Map
+router.get(`/allactive`, ownersController.findAllActive);
+
+//For account creation
 router.post(`/signup`, ownersController.create);
 router.post(`/login`, ownersController.authenticate);
+
+//protected routes
 router.put(`/description`, validateUser, ownersController.updateDescription);
 router.put(`/active`, validateUser, ownersController.setActive);
 router.put(`/inactive`, validateUser, ownersController.setInactive);
