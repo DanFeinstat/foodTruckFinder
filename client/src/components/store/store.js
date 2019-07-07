@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import ownerApi from "../../utils/ownerApi";
 
 const initialState = {
   trucks: [
@@ -63,17 +64,29 @@ const initialState = {
       blurb: `Creative grilled cheese sandwiches.`,
     },
   ],
+  realTrucks: [],
   trucksToDisplay: [],
+  owner: {
+    id: "",
+    name: "",
+    description: "",
+    loggedIn: false,
+  },
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case `addTruck`:
-      const newTrucks = [...state.trucks];
-      newTrucks.push(action.payload);
-      return { ...state, trucks: newTrucks };
+      const moreTrucks = action.payload;
+      return { ...state, realTrucks: moreTrucks };
+    case `removeTruck`:
+      const lessTrucks = [...state.realtrucks];
+      let filteredNewTrucks = lessTrucks.filter(
+        truck => truck.name !== action.payload
+      );
+      return { ...state, realTrucks: filteredNewTrucks };
     case `newMapBounds`:
-      const currentTrucks = [...state.trucks];
+      const currentTrucks = [...state.trucks, ...state.realTrucks];
       const newDisplay = [];
       currentTrucks.map(truck => {
         let latTest = [...action.payload.latRange];
@@ -87,6 +100,37 @@ function reducer(state, action) {
         }
       });
       return { ...state, trucksToDisplay: newDisplay };
+    case `login`:
+      let newOwner = { ...state.owner };
+      newOwner.id = action.payload.id;
+      newOwner.name = action.payload.name;
+      newOwner.description = action.payload.description;
+      newOwner.loggedIn = true;
+      return { ...state, owner: newOwner };
+    case `logout`:
+      let resetOwner = { ...state.owner };
+      resetOwner.id = "";
+      resetOwner.name = "";
+      resetOwner.description = "";
+      resetOwner.loggedIn = false;
+      return { ...state, owner: resetOwner };
+    case `editDescription`:
+      let newDescription = { ...state.owner };
+      newDescription.description = action.payload.description;
+      console.log(action.payload);
+      // const newDescriptionDatabaseObject = {
+      //   id: state.owner.id,
+      //   description: action.payload.description,
+      // };
+      // const descriptionUpdate = setUpdateDescription(
+      //   newDescriptionDatabaseObject,
+      //   action.payload.authToken
+      // );
+      // console.log(descriptionUpdate);
+      return {
+        ...state,
+        owner: newDescription,
+      };
     default:
       return state;
   }

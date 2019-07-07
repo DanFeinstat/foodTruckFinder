@@ -1,22 +1,22 @@
-const userModel = require(`../model/users`);
+const ownersModel = require(`../model/truckOwners`);
 const bcrypt = require(`bcrypt`);
 const jwt = require(`jsonwebtoken`);
 
 module.exports = {
   create: function(req, res, next) {
-    userModel
+    ownersModel
       .create({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        socketId: "",
+        description: req.body.description,
       })
       .then(user => res.json(user))
       .catch(err => res.status(422).json(err));
   },
 
   authenticate: function(req, res, next) {
-    userModel.findOne({ email: req.body.email }, function(err, userInfo) {
+    ownersModel.findOne({ email: req.body.email }, function(err, userInfo) {
       if (err) {
         next(err);
         res.json({ status: `error`, message: `Invalid email`, data: null });
@@ -43,77 +43,92 @@ module.exports = {
       }
     });
   },
-
-  findAll: function(req, res, next) {
-    userModel.find({}, { name: 1, socketId: 1 }, function(err, userInfo) {
-      if (err) {
-        next(err);
-      } else {
-        res.json({
-          status: `success`,
-          message: `got users`,
-          data: { users: userInfo },
-        });
-      }
-    });
-  },
-  deleteOwner: function(req, res) {
-    userModel
-      .deleteOne({ _id: req.params.id })
+  getUser: function(req, res, next) {
+    // console.log(req.params.id);
+    ownersModel
+      .findOne({
+        _id: req.params.id,
+      })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+
+  updateDescription: function(req, res, next) {
+    ownersModel
+      .findOneAndUpdate(
+        {
+          _id: req.body.id,
+        },
+        {
+          $set: { description: req.body.description },
+        }
+      )
+      .then(newDescription => res.json(newDescription))
+      .catch(err => res.status(422).json(err));
+  },
   newLocation: function(req, res) {
-    console.log(req.body);
-    userModel
-      .update(
-        { _id: req.params.id },
+    // console.log(req.body);
+    ownersModel
+      .findOneAndUpdate(
+        { _id: req.body.id },
         {
           $push: {
             // pushing location from req.body into the location array
             // $position 0 puts new location to 1st spot in the index
-            location: { $each: [req.body], $position: 0 },
+            location: { $each: [req.body.data], $position: 0 },
           },
         }
       )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  updateInformation: function(req, res) {
-    console.log(req.body);
-    userModel
-      .updateOne({ _id: req.params.id })
-      .then(dbModel => res.json(dbModel))
+  setActive: function(req, res, next) {
+    ownersModel
+      .findOneAndUpdate(
+        {
+          _id: req.body.id,
+        },
+        {
+          $set: { active: true },
+        }
+      )
+      .then(truckActive => res.json(truckActive))
       .catch(err => res.status(422).json(err));
   },
-  currentLocation: function(req, res) {
-    userModel
-      .find({ _id: req.params.id }, { location: { $slice: 1 } })
-      .then(dbModel => res.json(dbModel))
+  setInactive: function(req, res, next) {
+    ownersModel
+      .findOneAndUpdate(
+        {
+          _id: req.body.id,
+        },
+        {
+          $set: { active: false },
+        }
+      )
+      .then(truckInactive => res.json(truckInactive))
       .catch(err => res.status(422).json(err));
   },
-  findByType: function(req, res) {
-    userModel
-      .find({ foodType: req.params.foodtype })
-      .then(dbModel => res.json(dbModel))
+
+  findAllActive: function(req, res, next) {
+    ownersModel
+      .find({ active: true }, { location: { $slice: 1 } })
+      .then(activeTrucks => res.json(activeTrucks))
       .catch(err => res.status(422).json(err));
   },
-  trucksActive: function(req, res) {
-    userModel
-      .updateOne({ _id: req.params.id }, { truckActive: true })
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  trucksInactive: function(req, res) {
-    userModel
-      .updateOne({ _id: req.params.id }, { truckActive: false })
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  findActive: function(req, res) {
-    userModel
-      .find({ truckActive: true }, { location: { $slice: 1 } })
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
+
+  // setActive: function(req, res) {
+  //   db.Owners.updateOne({ _id: req.params.id }, { truckActive: true })
+  //     .then(dbModel => res.json(dbModel))
+  //     .catch(err => res.status(422).json(err));
+  // },
+  // trucksInactive: function(req, res) {
+  //   db.Owners.updateOne({ _id: req.params.id }, { truckActive: false })
+  //     .then(dbModel => res.json(dbModel))
+  //     .catch(err => res.status(422).json(err));
+  // },
+  // findActive: function(req, res) {
+  //   db.Owners.find({ truckActive: true }, { location: { $slice: 1 } })
+  //     .then(dbModel => res.json(dbModel))
+  //     .catch(err => res.status(422).json(err));
+  // },
 };

@@ -2,13 +2,16 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3002",
   "dependencies": {
+    "axios": "^0.19.0",
     "mapbox-gl": "^1.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-mapbox-gl": "^4.4.0",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "socket.io-client": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
