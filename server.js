@@ -50,7 +50,7 @@ mongoose.connect(
 io.on(`connection`, function(socket) {
   console.log(`a new user is connected: ${socket.id}`);
   socket.on("truckStatusChange", () => {
-    io.emit(`NewTruckActivity`);
+    io.emit(`newTruckActivity`);
   });
 });
 
