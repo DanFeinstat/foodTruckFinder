@@ -50,9 +50,9 @@ const Map = ({ menuActive }) => {
 
   const getTrucks = () => {
     ownerApi.getAllActive().then(res => {
-      // console.log(res.data);
+      let response = res.data;
       let newActiveTrucks = [];
-      res.data.map(item => {
+      response.map(item => {
         let newTruck = {
           name: item.name,
           latitude: item.location[0].latitude,
