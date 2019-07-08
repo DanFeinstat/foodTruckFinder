@@ -3,9 +3,9 @@ import ReactMapboxGl, {
   Layer,
   Feature,
   Popup,
-  MapContext,
-  Image,
-  Marker,
+  // MapContext,
+  // Image,
+  // Marker,
 } from "react-mapbox-gl";
 import styles from "./Map.module.css";
 // import foodMarker from "../../assets/images/foodMapMarker.png";
