@@ -64,9 +64,9 @@ const initialState = {
       blurb: `Creative grilled cheese sandwiches.`,
     },
   ],
-  // popUpInfo: null,
   popupValue: null,
   realTrucks: [],
+  mapBounds: {},
   trucksToDisplay: [],
   owner: {
     id: "",
@@ -82,7 +82,7 @@ function reducer(state, action) {
       const moreTrucks = action.payload;
       return { ...state, realTrucks: moreTrucks };
     case `removeTruck`:
-      const lessTrucks = [...state.realtrucks];
+      const lessTrucks = [...state.realTrucks];
       let filteredNewTrucks = lessTrucks.filter(
         truck => truck.name !== action.payload
       );
@@ -101,7 +101,15 @@ function reducer(state, action) {
           newDisplay.push(truck);
         }
       });
-      return { ...state, trucksToDisplay: newDisplay };
+      let updateMapBounds = action.payload;
+      // console.log(updateMapBounds);
+      // console.log(state);
+
+      return {
+        ...state,
+        trucksToDisplay: newDisplay,
+        mapBounds: updateMapBounds,
+      };
     // case `popupInfo`:
     //   const newPopupInfo = [action.payload.longitude, action.payload.latitude];
     //   return { ...state, popUpInfo: newPopupInfo };

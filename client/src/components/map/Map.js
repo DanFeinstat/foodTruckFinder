@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import ReactMapboxGl, {
   Layer,
   Feature,
@@ -22,7 +22,7 @@ const Mapbox = ReactMapboxGl({ accessToken: token });
 
 const Map = ({ menuActive }) => {
   const { state, dispatch } = useContext(AppContext);
-  // const [mapBounds, setMapBounds] = useState({});
+  // const [mapBounds, setMapBounds] = useState();
   // const [popupInfo, setPopupInfo] = useState();
   // const [popupValue, setPopupValue] = useState();
   const [mapCenter, setMapCenter] = useState([-121.4944, 38.5816]);
@@ -48,7 +48,7 @@ const Map = ({ menuActive }) => {
     }
   };
 
-  const getTrucks = () => {
+  const getTrucks = useCallback(() => {
     ownerApi.getAllActive().then(res => {
       // let response = res.data;
       console.log(res.data);
@@ -64,18 +64,10 @@ const Map = ({ menuActive }) => {
           newActiveTrucks.push(newTruck);
         }
       }
-      // response.map(item => {
-      //   let newTruck = {
-      //     name: item.name,
-      //     latitude: item.location[0].latitude,
-      //     longitude: item.location[0].longitude,
-      //     blurb: item.description,
-      //   };
-      //   newActiveTrucks.push(newTruck);
-      // });
       dispatch({ type: `addTruck`, payload: newActiveTrucks });
+      console.log(`1`);
     });
-  };
+  }, [state.realTrucks]);
 
   useEffect(() => {
     getCenterPosition();
@@ -85,8 +77,11 @@ const Map = ({ menuActive }) => {
   useEffect(() => {
     socket.on("newTruckActivity", message => {
       getTrucks();
+      console.log(state.mapBounds);
+      // dispatch({ type: `newMapBounds`, payload: state.mapBounds });
+      console.log(2);
     });
-  });
+  }, [state.realTrucks, state.mapBounds, getTrucks]);
 
   useEffect(() => {
     if (viewHeight !== mapHeight + 56) {
@@ -114,7 +109,7 @@ const Map = ({ menuActive }) => {
       center={mapCenter}
       onStyleLoad={map => {
         let rawBounds = map.getBounds();
-        let onLoadBounds = {
+        const onLoadBounds = {
           latRange: [rawBounds._ne.lat, rawBounds._sw.lat],
           lngRange: [rawBounds._ne.lng, rawBounds._sw.lng],
         };
@@ -123,8 +118,6 @@ const Map = ({ menuActive }) => {
           type: `newMapBounds`,
           payload: onLoadBounds,
         });
-        // setMapBounds(map.getBounds());
-        // console.log(map.getBounds());
       }}
       onClick={() => {
         dispatch({ type: `popupValue` });
@@ -135,29 +128,33 @@ const Map = ({ menuActive }) => {
       }}
       onDragEnd={map => {
         let rawBounds = map.getBounds();
-        let onLoadBounds = {
+        let dragEndBounds = {
           latRange: [rawBounds._ne.lat, rawBounds._sw.lat],
           lngRange: [rawBounds._ne.lng, rawBounds._sw.lng],
         };
-        // console.log(onLoadBounds);
         dispatch({
           type: `newMapBounds`,
-          payload: onLoadBounds,
+          payload: dragEndBounds,
         });
+        // setMapBounds(dragEndBounds);
+        // console.log(mapBounds);
+
         // setMapBounds(map.getBounds());
         // console.log(map.getBounds());
       }}
       onZoomEnd={map => {
         let rawBounds = map.getBounds();
-        let onLoadBounds = {
+        let zoomEndBounds = {
           latRange: [rawBounds._ne.lat, rawBounds._sw.lat],
           lngRange: [rawBounds._ne.lng, rawBounds._sw.lng],
         };
         // console.log(onLoadBounds);
         dispatch({
           type: `newMapBounds`,
-          payload: onLoadBounds,
+          payload: zoomEndBounds,
         });
+        // setMapBounds(zoomEndBounds);
+
         // setMapBounds(map.getBounds());
         // console.log(map.getBounds());
       }}
