@@ -48,10 +48,10 @@ const Map = ({ menuActive }) => {
     }
   };
 
-  const getTrucks = useCallback(() => {
+  const getTrucks = () => {
     ownerApi.getAllActive().then(res => {
       // let response = res.data;
-      console.log(res.data);
+      // console.log(res.data);
       let newActiveTrucks = [];
       if (res.data.length) {
         for (let i = 0; i < res.data.length; i++) {
@@ -65,9 +65,8 @@ const Map = ({ menuActive }) => {
         }
       }
       dispatch({ type: `addTruck`, payload: newActiveTrucks });
-      console.log(`1`);
     });
-  }, [state.realTrucks]);
+  };
 
   useEffect(() => {
     getCenterPosition();
@@ -77,11 +76,8 @@ const Map = ({ menuActive }) => {
   useEffect(() => {
     socket.on("newTruckActivity", message => {
       getTrucks();
-      console.log(state.mapBounds);
-      // dispatch({ type: `newMapBounds`, payload: state.mapBounds });
-      console.log(2);
     });
-  }, [state.realTrucks, state.mapBounds, getTrucks]);
+  });
 
   useEffect(() => {
     if (viewHeight !== mapHeight + 56) {
@@ -179,7 +175,7 @@ const Map = ({ menuActive }) => {
                   longitude: feature.geometry.coordinates[0],
                   latitude: feature.geometry.coordinates[1],
                 };
-                console.log(details);
+                // console.log(details);
                 dispatch({
                   type: `popupValue`,
                   payload: {
