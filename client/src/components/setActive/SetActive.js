@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styles from "./SetActive.module.css";
 import ownerApi from "../../utils/ownerApi";
 import { AppContext } from "../store/store";
@@ -53,6 +53,14 @@ const SetActive = () => {
         alert(`Now Offline`);
       });
   };
+
+  useEffect(() => {
+    ownerApi
+      .getUser(state.owner.id, localStorage.foodTruckTrackerJwt)
+      .then(res => {
+        setActive(res.data.active);
+      });
+  }, []);
 
   return (
     <div className={styles.container}>

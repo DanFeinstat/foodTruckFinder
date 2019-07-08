@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import ownerApi from "../../utils/ownerApi";
 import styles from "./SignUp.module.css";
 import { AppContext } from "../store/store";
+import { withRouter } from "react-router-dom";
 
 const SignUp = props => {
   const { state, dispatch } = useContext(AppContext);
@@ -48,39 +49,32 @@ const SignUp = props => {
       password: password,
       description: description,
     };
-    ownerApi.signUp(userData).then(response => {
+    ownerApi.signUp(userData).then(res => {
       let userInfo = {
         email: email,
         password: password,
       };
 
-      ownerApi
-        .logIn(userInfo)
-        .then(response => {
-          if (response.data.status === "error") {
-            alert(response.data.message);
-          } else {
-            localStorage.setItem(
-              "foodTruckTrackerJwt",
-              response.data.data.token
-            );
-            // console.log(response.data.user);
-            setPassword("");
-            setConfirmPassword("");
-            dispatch({
-              type: `login`,
-              payload: {
-                id: response.data.user._id,
-                name: name,
-                description: description,
-                loggedIn: true,
-              },
-            });
-          }
-        })
-        .then(res => {
-          props.history.push(`/dashboard`);
-        });
+      ownerApi.logIn(userInfo).then(response => {
+        if (response.data.status === "error") {
+          alert(response.data.message);
+        } else {
+          localStorage.setItem("foodTruckTrackerJwt", response.data.data.token);
+          // console.log(response.data);
+          setPassword("");
+          setConfirmPassword("");
+          dispatch({
+            type: `login`,
+            payload: {
+              id: response.data.data.user._id,
+              name: response.data.data.user.name,
+              description: response.data.data.user.description,
+              loggedIn: true,
+            },
+          });
+          props.history.push(`/truckDashboard`);
+        }
+      });
     });
   };
 
@@ -200,4 +194,4 @@ const SignUp = props => {
     </form>
   );
 };
-export default SignUp;
+export default withRouter(SignUp);

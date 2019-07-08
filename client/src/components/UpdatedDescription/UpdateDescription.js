@@ -15,11 +15,11 @@ const UpdateDescription = () => {
 
   const addUpdateDescription = async (obj, authToken) => {
     ownerApi.updateDescription(obj, authToken).then(res => {
-      console.log(res);
+      // console.log(res);
       ownerApi
         .getUser(state.owner.id, localStorage.foodTruckTrackerJwt)
         .then(response => {
-          console.log(response);
+          // console.log(response);
           dispatch({
             type: `editDescription`,
             payload: {

@@ -32,14 +32,14 @@ const LogIn = props => {
       email: email,
       password: password,
     };
-    console.log(userData);
+    // console.log(userData);
 
     ownerApi.logIn(userData).then(response => {
       if (response.data.status === "error") {
         alert(response.data.message);
       } else {
         localStorage.setItem("foodTruckTrackerJwt", response.data.data.token);
-        console.log(response.data.data.user);
+        // console.log(response.data.data.user);
         setPassword("");
         dispatch({
           type: `login`,
