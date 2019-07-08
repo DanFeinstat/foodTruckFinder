@@ -22,9 +22,9 @@ const Mapbox = ReactMapboxGl({ accessToken: token });
 
 const Map = ({ menuActive }) => {
   const { state, dispatch } = useContext(AppContext);
-  const [mapBounds, setMapBounds] = useState({});
-  const [popupInfo, setPopupInfo] = useState();
-  const [popupValue, setPopupValue] = useState();
+  // const [mapBounds, setMapBounds] = useState({});
+  // const [popupInfo, setPopupInfo] = useState();
+  // const [popupValue, setPopupValue] = useState();
   const [mapCenter, setMapCenter] = useState([-121.4944, 38.5816]);
   const [viewHeight, setViewHeight] = useState(
     document.documentElement.clientHeight
@@ -51,16 +51,26 @@ const Map = ({ menuActive }) => {
   const getTrucks = () => {
     ownerApi.getAllActive().then(res => {
       let response = res.data;
+      console.log(response);
       let newActiveTrucks = [];
-      response.map(item => {
+      for (let i = 0; i < response.length; i++) {
         let newTruck = {
-          name: item.name,
-          latitude: item.location[0].latitude,
-          longitude: item.location[0].longitude,
-          blurb: item.description,
+          name: response[i].name,
+          latitude: response[i].location[0].latitude,
+          longitude: response[i].location[0].longitude,
+          blurb: response[i].description,
         };
         newActiveTrucks.push(newTruck);
-      });
+      }
+      // response.map(item => {
+      //   let newTruck = {
+      //     name: item.name,
+      //     latitude: item.location[0].latitude,
+      //     longitude: item.location[0].longitude,
+      //     blurb: item.description,
+      //   };
+      //   newActiveTrucks.push(newTruck);
+      // });
       dispatch({ type: `addTruck`, payload: newActiveTrucks });
     });
   };
