@@ -50,17 +50,19 @@ const Map = ({ menuActive }) => {
 
   const getTrucks = () => {
     ownerApi.getAllActive().then(res => {
-      let response = res.data;
-      console.log(response);
+      // let response = res.data;
+      console.log(res.data);
       let newActiveTrucks = [];
-      for (let i = 0; i < response.length; i++) {
-        let newTruck = {
-          name: response[i].name,
-          latitude: response[i].location[0].latitude,
-          longitude: response[i].location[0].longitude,
-          blurb: response[i].description,
-        };
-        newActiveTrucks.push(newTruck);
+      if (res.data.length) {
+        for (let i = 0; i < res.data.length; i++) {
+          let newTruck = {
+            name: res.data[i].name,
+            latitude: res.data[i].location[0].latitude,
+            longitude: res.data[i].location[0].longitude,
+            blurb: res.data[i].description,
+          };
+          newActiveTrucks.push(newTruck);
+        }
       }
       // response.map(item => {
       //   let newTruck = {
