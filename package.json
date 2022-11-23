@@ -27,6 +27,6 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.12",
     "path": "^0.12.7",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.5.0"
   }
 }
